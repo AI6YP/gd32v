@@ -2,4 +2,4 @@
 
 GD32V bare metal
 
-using LLVM
+using LLVM 11.0.1
