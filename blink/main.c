@@ -1,20 +1,5 @@
-#include <stddef.h>
+#include <string.h>
 #include "gd32vf103.h"
-
-void* memcpy(void *dest, const void *src, size_t len) {
-  char *csrc = (char *)src;
-  char *cdest = (char *)dest;
-  for (unsigned int i = 0; i < len; i++) {
-    cdest[i] = csrc[i];
-  }
-  return dest;
-}
-
-void* memset(void *dest, int ch, size_t count) {
-  unsigned char* p = dest;
-  while(count--) { *p++ = (unsigned char)ch; }
-  return dest;
-}
 
 // Pre-defined memory locations for program initialization.
 extern uint32_t _sidata, _sdata, _edata, _sbss, _ebss;
