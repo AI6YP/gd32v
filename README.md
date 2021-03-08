@@ -1,2 +1,5 @@
 # gd32v
-GD32V bare metal x
+
+GD32V bare metal
+
+using LLVM
