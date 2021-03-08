@@ -4,18 +4,18 @@ OD = llvm-objdump
 
 ASFLAGS += -c
 # ASFLAGS += -std=c11
-ASFLAGS += -O0
+ASFLAGS += -Os
 ASFLAGS += -Wall
 ASFLAGS += --target=riscv32 -march=rv32imac -mabi=ilp32
-ASFLAGS += -mcmodel=medlow
+# ASFLAGS += -mcmodel=medlow
 
 # C compilation directives
 CFLAGS += -c
 # CFLAGS += -std=c11
 CFLAGS += -Wall
-CFLAGS += -O0
-CFLAGS += -g
-CFLAGS += -mcmodel=medlow
+CFLAGS += -Os
+# CFLAGS += -g
+# CFLAGS += -mcmodel=medlow
 CFLAGS += --target=riscv32 -march=rv32imac -mabi=ilp32
 
 # Linker directives.
@@ -23,7 +23,7 @@ LFLAGS += -Wall
 LFLAGS += -Wl,--no-relax
 LFLAGS += -nostdlib
 LFLAGS += -nostartfiles
-LFLAGS += -mcmodel=medlow
+# LFLAGS += -mcmodel=medlow
 LFLAGS += --target=riscv32 -march=rv32imac -mabi=ilp32
 LFLAGS += -T./../common/gd32vf103xb.ld
 

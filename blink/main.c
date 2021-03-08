@@ -1,19 +1,15 @@
 #include <stdint.h>
 #include "gd32vf103.h"
 
-void memCpy(void *dest, void *src, unsigned int len) {
+void memcpy(void *dest, void *src, unsigned int len) {
    char *csrc = (char *)src;
    char *cdest = (char *)dest;
-   for (unsigned int i = 0; i < len; i++) {
-    cdest[i] = csrc[i];
-   }
+   for (unsigned int i = 0; i < len; i++) { cdest[i] = csrc[i]; }
 }
 
-void *memSet(void *s, int c,  unsigned int len) {
+void *memset(void *s, int c,  unsigned int len) {
   unsigned char* p=s;
-  while(len--) {
-    *p++ = (unsigned char)c;
-  }
+  while(len--) { *p++ = (unsigned char)c; }
   return s;
 }
 
@@ -31,9 +27,9 @@ void delay_cycles( uint32_t cyc ) {
 // 'main' method which gets called from the boot code.
 int main () {
   // Copy initialized data from .sidata (Flash) to .data (RAM)
-  memCpy( &_sdata, &_sidata, ( ( void* )&_edata - ( void* )&_sdata ) );
+  memcpy( &_sdata, &_sidata, ( ( void* )&_edata - ( void* )&_sdata ) );
   // Clear the .bss RAM section.
-  memSet( &_sbss, 0x00, ( ( void* )&_ebss - ( void* )&_sbss ) );
+  memset( &_sbss, 0x00, ( ( void* )&_ebss - ( void* )&_sbss ) );
 
   RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
 
@@ -47,9 +43,9 @@ int main () {
 
   while(1) {
     GPIOA->ODR = 2; // blue LED on
-    delay_cycles(200000);
+    delay_cycles(300000);
     GPIOA->ODR = 6; // blue LED off
-    delay_cycles(1000000);
+    delay_cycles(2000000);
   }
   return 0;
 }
