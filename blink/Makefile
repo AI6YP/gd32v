@@ -30,7 +30,7 @@ LFLAGS += -T./../common/gd32vf103xb.ld
 AS_SRC = ./../common/gd32vf103xb_boot.S
 C_SRC = ./main.c
 
-INCLUDE = -I./../common/device_headers
+INCLUDE = -I./../common
 
 OBJS  = $(AS_SRC:.S=.o)
 OBJS += $(C_SRC:.c=.o)

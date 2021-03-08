@@ -1,16 +1,19 @@
-#include <stdint.h>
+#include <stddef.h>
 #include "gd32vf103.h"
 
-void memcpy(void *dest, void *src, unsigned int len) {
-   char *csrc = (char *)src;
-   char *cdest = (char *)dest;
-   for (unsigned int i = 0; i < len; i++) { cdest[i] = csrc[i]; }
+void* memcpy(void *dest, const void *src, size_t len) {
+  char *csrc = (char *)src;
+  char *cdest = (char *)dest;
+  for (unsigned int i = 0; i < len; i++) {
+    cdest[i] = csrc[i];
+  }
+  return dest;
 }
 
-void *memset(void *s, int c,  unsigned int len) {
-  unsigned char* p=s;
-  while(len--) { *p++ = (unsigned char)c; }
-  return s;
+void* memset(void *dest, int ch, size_t count) {
+  unsigned char* p = dest;
+  while(count--) { *p++ = (unsigned char)ch; }
+  return dest;
 }
 
 // Pre-defined memory locations for program initialization.
