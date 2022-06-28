@@ -254,7 +254,7 @@ void lcd_init () {
   LCD_WR_DATA8(0x82);
 
   LCD_WR_REG(ST7789_COLMOD);
-  LCD_WR_DATA8(0x55);
+  LCD_WR_DATA8(0x55); // 16bit/pixel 5-6-5
 
   delay_us(10);
 
@@ -353,6 +353,33 @@ void lcd_init () {
   delay_us(10);
 }
 
+int colors [] = {
+  // 0, // black
+  // 0xaaaa, // grey
+  // 0xffff, // white
+  // 0x0ee0, // green
+  // 0xeee0  // yellow
+  //  R     G    B
+  //.....******.....
+  0b0000000000000000, //  0 Black
+  0b1111100000000000, //  1 Red
+  0b0000011111100000, //  2 Green
+  0b1111111111100000, //  3 Yellow
+  0b0000000000011111, //  4 Blue
+  0b1111100000011111, //  5 Magenta
+  0b0000011111111111, //  6 Cyan
+  0b0111101111101111, //  7 White
+  //.....******.....
+  0b0011100011100111, //  8 Bright Black
+  0b1111100011100111, //  9 Bright Red
+  0b0011111111100111, // 10 Bright Green
+  0b1111111111100111, // 11 Bright Yellow
+  0b0011100011111111, // 12 Bright Blue
+  0b1111100011111111, // 13 Bright Magenta
+  0b0011111111111111, // 14 Bright Cyan
+  0b1111111111111111, // 15 Bright White
+  //.....******.....
+};
 void lcd_fill (uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color) {
   uint16_t i, j;
   LCD_Address_Set(x0, y0, x1, y1);
@@ -376,5 +403,6 @@ void LCD_ShowChar(uint16_t x, uint16_t y, int num, uint8_t mode, uint16_t color)
     }
   }
 }
+
 
 #endif
