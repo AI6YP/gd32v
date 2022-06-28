@@ -17,12 +17,13 @@ CFLAGS += -Os
 # CFLAGS += -g
 # CFLAGS += -mcmodel=medlow
 CFLAGS += --target=riscv32 -march=rv32imac -mabi=ilp32
+CFLAGS += -mno-relax
 
 # Linker directives.
 LFLAGS += -Wall
 LFLAGS += -Wl,--no-relax
 LFLAGS += -nostdlib
-LFLAGS += -nostartfiles
+# LFLAGS += -nostartfiles
 # LFLAGS += -mcmodel=medlow
 LFLAGS += --target=riscv32 -march=rv32imac -mabi=ilp32
 LFLAGS += -T./../common/gd32vf103xb.ld
@@ -56,6 +57,9 @@ main.asm: main.elf
 dfu: main.bin main.asm
 	dfu-util -a 0 -d 28e9:0189 --dfuse-address 0x08000000:leave -D main.bin
 
+upload: main.bin
+	openocd -f ../f232h-gd32v.cfg -c "program main.bin exit 0x08000000"
+
 .PHONY: clean
 clean:
-	rm -f $(OBJS) main.elf main.bin main.asm
+	rm -f $(OBJS) main.elf main.bin main.asm main.o
