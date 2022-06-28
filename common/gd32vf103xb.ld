@@ -10,7 +10,7 @@ MEMORY
 
 SECTIONS
 {
-  __stack_size = DEFINED(__stack_size) ? __stack_size : 1K;
+  STACK_SIZE = DEFINED(__stack_size__) ? __stack_size__ : 1K;
 
   .vector_table :
   {
@@ -60,10 +60,19 @@ SECTIONS
   PROVIDE( _end = . );
   PROVIDE( end = . );
 
-  .stack ORIGIN(RAM) + LENGTH(RAM) - __stack_size :
+  /* .stack ORIGIN(RAM) + LENGTH(RAM) - __stack_size :
   {
     PROVIDE( _heap_end = . );
     . = __stack_size;
     PROVIDE( _sp = . );
-  } >RAM
+  } >RAM */
+  .stack (NOLOAD):
+  {
+    . = ALIGN(8);
+    _sstack = .;
+    . = . + STACK_SIZE;
+    . = ALIGN(8);
+    _estack = .;
+    PROVIDE( _sp = . );
+  } > RAM
 }

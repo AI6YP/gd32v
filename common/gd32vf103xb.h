@@ -10,7 +10,44 @@
 /**
  * Compatibility definitions and RISC-V specific values.
  */
-extern volatile uint32_t SystemCoreClock;
+
+// extern volatile uint32_t SystemCoreClock;
+// uint32_t SystemCoreClock = 108000000;
+uint32_t SystemCoreClock = 103219200;
+
+
+// TIMER
+#define TIMER_MSIP 0xFFC
+#define TIMER_MSIP_size   0x4
+#define TIMER_MTIMECMP 0x8
+#define TIMER_MTIMECMP_size 0x8
+#define TIMER_MTIME 0x0
+#define TIMER_MTIME_size 0x8
+
+#define TIMER_CTRL_ADDR   0xd1000000
+#define TIMER_REG(offset) _REG32(TIMER_CTRL_ADDR, offset)
+#define TIMER_FREQ        ((uint32_t)SystemCoreClock / 8)  //units HZ
+
+uint32_t mtime_lo(void) {
+  return *(volatile uint32_t *)(TIMER_CTRL_ADDR + TIMER_MTIME);
+}
+
+uint32_t mtime_hi(void) {
+  return *(volatile uint32_t *)(TIMER_CTRL_ADDR + TIMER_MTIME + 4);
+}
+
+uint64_t get_timer_value() {
+  while (1) {
+    uint32_t hi = mtime_hi();
+    uint32_t lo = mtime_lo();
+    if (hi == mtime_hi())
+      return ((uint64_t)hi << 32) | lo;
+  }
+}
+
+uint32_t get_timer_freq() {
+  return TIMER_FREQ;
+}
 
 /**
  * Interrupt handler enumeration.
@@ -119,8 +156,8 @@ typedef struct
   volatile uint32_t CRL;
   volatile uint32_t CRH;
   volatile uint32_t IDR;
-  volatile uint32_t ODR;
-  volatile uint32_t BSRR;
+  volatile uint32_t ODR; // OCTL
+  volatile uint32_t BSRR; // BOP [clear, set]
   volatile uint32_t BRR;
   volatile uint32_t LCKR;
 } GPIO_TypeDef;
@@ -200,6 +237,7 @@ typedef struct
 #define SPI3          ( ( SPI_TypeDef * )         0x40003C00 )
 
 /* RCC register bit definitions. */
+
 /* APB2RSTR */
 #define RCC_APB2RSTR_AFIORST_Pos   ( 0U )
 #define RCC_APB2RSTR_AFIORST_Msk   ( 0x1UL << RCC_APB2RSTR_AFIORST_Pos )
@@ -259,6 +297,23 @@ typedef struct
 #define RCC_AHBENR_USBFSEN_Pos   ( 12U )
 #define RCC_AHBENR_USBFSEN_Msk   ( 0x1UL << RCC_AHBENR_USBFSEN_Pos )
 #define RCC_AHBENR_USBFSEN       ( RCC_AHBENR_USBFSEN_Msk )
+
+/* APB1RSTR */
+#define RCC_APB1RSTR_SPI2RST_Pos   ( 14U )
+#define RCC_APB1RSTR_SPI2RST_Msk   ( 0x1UL << RCC_APB1RSTR_SPI2RST_Pos )
+#define RCC_APB1RSTR_SPI2RST       ( RCC_APB1RSTR_SPI2RST_Msk )
+#define RCC_APB1RSTR_SPI3RST_Pos   ( 15U )
+#define RCC_APB1RSTR_SPI3RST_Msk   ( 0x1UL << RCC_APB1RSTR_SPI3RST_Pos )
+#define RCC_APB1RSTR_SPI3RST       ( RCC_APB1RSTR_SPI3RST_Msk )
+
+/* APB1ENR */
+#define RCC_APB1ENR_SPI2EN_Pos   ( 14U )
+#define RCC_APB1ENR_SPI2EN_Msk   ( 0x1UL << RCC_APB1ENR_SPI2EN_Pos )
+#define RCC_APB1ENR_SPI2EN       ( RCC_APB1ENR_SPI2EN_Msk )
+#define RCC_APB1ENR_SPI3EN_Pos   ( 15U )
+#define RCC_APB1ENR_SPI3EN_Msk   ( 0x1UL << RCC_APB1ENR_SPI3EN_Pos )
+#define RCC_APB1ENR_SPI3EN       ( RCC_APB1ENR_SPI3EN_Msk )
+
 /* APB2ENR */
 #define RCC_APB2ENR_AFIOEN_Pos   ( 0U )
 #define RCC_APB2ENR_AFIOEN_Msk   ( 0x1UL << RCC_APB2ENR_AFIOEN_Pos )
@@ -295,6 +350,16 @@ typedef struct
 #define RCC_APB2ENR_USART1EN     ( RCC_APB2ENR_USART1EN_Msk )
 
 /* AFIO register bit definitions. */
+/* MAPR */
+#define AFIO_MARP_SPI1_REMAP_Pos  ( 0U )
+#define AFIO_MARP_SPI1_REMAP_Msk  ( 0x1UL << AFIO_MARP_SPI1_REMAP_Pos )
+#define AFIO_MARP_SPI1_REMAP      ( AFIO_MARP_SPI1_REMAP_Msk )
+#define AFIO_MAPR_SWJ_CFG_Pos  ( 24U )
+#define AFIO_MAPR_SWJ_CFG_Msk  ( 0x7UL << AFIO_MAPR_SWJ_CFG_Pos )
+#define AFIO_MAPR_SWJ_CFG      ( AFIO_MAPR_SWJ_CFG_Msk )
+#define AFIO_MARP_SPI2_REMAP_Pos  ( 28U )
+#define AFIO_MARP_SPI2_REMAP_Msk  ( 0x1UL << AFIO_MARP_SPI2_REMAP_Pos )
+#define AFIO_MARP_SPI2_REMAP      ( AFIO_MARP_SPI2_REMAP_Msk )
 
 /* GPIO register bit definitions. */
 /* CRL */
@@ -401,7 +466,7 @@ typedef struct
 #define GPIO_CRH_CNF13_Pos  ( 22U )
 #define GPIO_CRH_CNF13_Msk  ( 0x3UL << GPIO_CRH_CNF13_Pos )
 #define GPIO_CRH_CNF13      ( GPIO_CRH_CNF13_Msk )
-#define GPIO_CRH_CNF14_Pos  ( 214U )
+#define GPIO_CRH_CNF14_Pos  ( 24U )
 #define GPIO_CRH_CNF14_Msk  ( 0x3UL << GPIO_CRH_CNF14_Pos )
 #define GPIO_CRH_CNF14      ( GPIO_CRH_CNF14_Msk )
 #define GPIO_CRH_CNF15_Pos  ( 30U )
