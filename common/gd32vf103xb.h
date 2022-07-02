@@ -210,6 +210,24 @@ typedef struct
   volatile uint32_t I2SPR;
 } SPI_TypeDef;
 
+/**
+ * I2C peripheral struct.
+ */
+typedef struct
+{
+  volatile uint32_t CTL0;   // Control register 0 (I2C_CTL0)
+  volatile uint32_t CTL1;   // Control register 1 (I2C_CTL1)
+  volatile uint32_t SADDR0; // Slave address register 0 (I2C_SADDR0)
+  volatile uint32_t SADDR1; // Slave address register 1 (I2C_SADDR1)
+  volatile uint32_t DATA;   // Transfer buffer register (I2C_DATA)
+  volatile uint32_t STAT0;  // Transfer status register 0 (I2C_STAT0)
+  volatile uint32_t STAT1;  // Transfer status register 1 (I2C_STAT1)
+  volatile uint32_t CKCFG;  // Clock configure register (I2C_CKCFG)
+  volatile uint32_t RT;     // Rise time register (I2C_RT)
+  // volatile uint32_t FMPCFG; // 0x90 Fast mode plus configure register (I2C_FMPCFG)
+} I2C_TypeDef;
+
+
 /* Global register block address definitions. */
 #define RCC           ( ( RCC_TypeDef * )         0x40021000 )
 #define GPIOA         ( ( GPIO_TypeDef * )        0x40010800 )
@@ -235,6 +253,9 @@ typedef struct
 #define SPI1          ( ( SPI_TypeDef * )         0x40013000 )
 #define SPI2          ( ( SPI_TypeDef * )         0x40003800 )
 #define SPI3          ( ( SPI_TypeDef * )         0x40003C00 )
+#define I2C1          ( ( I2C_TypeDef * )         0x40005400 )
+#define I2C2          ( ( I2C_TypeDef * )         0x40005800 )
+
 
 /* RCC register bit definitions. */
 
@@ -313,6 +334,12 @@ typedef struct
 #define RCC_APB1ENR_SPI3EN_Pos   ( 15U )
 #define RCC_APB1ENR_SPI3EN_Msk   ( 0x1UL << RCC_APB1ENR_SPI3EN_Pos )
 #define RCC_APB1ENR_SPI3EN       ( RCC_APB1ENR_SPI3EN_Msk )
+#define RCC_APB1ENR_I2C1EN_Pos   ( 21U )
+#define RCC_APB1ENR_I2C1EN_Msk   ( 0x1UL << RCC_APB1ENR_I2C1EN_Pos )
+#define RCC_APB1ENR_I2C1EN       ( RCC_APB1ENR_I2C1EN_Msk )
+#define RCC_APB1ENR_I2C2EN_Pos   ( 22U )
+#define RCC_APB1ENR_I2C2EN_Msk   ( 0x1UL << RCC_APB1ENR_I2C2EN_Pos )
+#define RCC_APB1ENR_I2C2EN       ( RCC_APB1ENR_I2C2EN_Msk )
 
 /* APB2ENR */
 #define RCC_APB2ENR_AFIOEN_Pos   ( 0U )
@@ -466,7 +493,7 @@ typedef struct
 #define GPIO_CRH_CNF13_Pos  ( 22U )
 #define GPIO_CRH_CNF13_Msk  ( 0x3UL << GPIO_CRH_CNF13_Pos )
 #define GPIO_CRH_CNF13      ( GPIO_CRH_CNF13_Msk )
-#define GPIO_CRH_CNF14_Pos  ( 24U )
+#define GPIO_CRH_CNF14_Pos  ( 26U )
 #define GPIO_CRH_CNF14_Msk  ( 0x3UL << GPIO_CRH_CNF14_Pos )
 #define GPIO_CRH_CNF14      ( GPIO_CRH_CNF14_Msk )
 #define GPIO_CRH_CNF15_Pos  ( 30U )
@@ -614,5 +641,18 @@ typedef struct
 #define SPI_SR_FERR_Pos   ( 8U )
 #define SPI_SR_FERR_Msk   ( 0x1UL << SPI_SR_FERR_Pos )
 #define SPI_SR_FERR       ( SPI_SR_FERR_Msk )
+
+
+void delay_ms(uint32_t d) {
+  for (uint32_t i = 0; i < (d * 1300); i++) {
+    __asm__( "nop; nop; nop" );
+  }
+}
+
+void delay_us(uint32_t d) {
+  for (uint32_t i = 0; i < d; i++) {
+    __asm__( "nop; nop; nop" );
+  }
+}
 
 #endif

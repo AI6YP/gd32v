@@ -25,17 +25,6 @@
 
 #define SPI           SPI3
 
-void delay_ms(uint32_t d) {
-  for (uint32_t i = 0; i < (d * 1300); i++) {
-    __asm__( "nop; nop; nop" );
-  }
-}
-
-void delay_us(uint32_t d) {
-  for (uint32_t i = 0; i < d; i++) {
-    __asm__( "nop; nop; nop" );
-  }
-}
 
 #define ST7789_SLPOUT       0x11
 #define ST7789_NORON        0x13
