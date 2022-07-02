@@ -38,3 +38,7 @@ https://mcuoneclipse.com/2019/10/20/jtag-debugging-the-esp32-with-ft2232-and-ope
 https://balau82.wordpress.com/2013/08/04/jtag-connection-with-openocd-and-ftdi-cable/
 
 https://gist.github.com/elfmimi/1deb9c94b0f0900ae8a9df740b62bcd6
+
+## I2C
+
+https://controllerstech.com/stm32-i2c-configuration-using-registers/
