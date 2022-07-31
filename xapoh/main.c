@@ -97,8 +97,10 @@
 #define ON_1  GPIOA->ODR |=  (1 << 4);
 #define ON_0  GPIOA->ODR &= ~(1 << 4);
 
-void port_init () {
 
+
+
+void port_init () {
 
   RCC->APB2ENR |= ( // clock enable
     RCC_APB2ENR_IOPAEN | // GPIOA
@@ -183,18 +185,6 @@ void port_init () {
     (0x2 << GPIO_CRH_MODE15_Pos) | // AN  -> PC15
     0
   );
-
-  // Initial state
-  Y1_0  Y2_0  Y3_1  Y4_0 // band 0
-  Y5_0  Y5N1
-  Y6_0  Y6N1
-  A__0  AN_1
-  B__0  BN_1
-  J__0  JN_1
-  Q__1  QN_0
-  PTT1  PTN0
-  MA_0  MB_0
-  ON_0
 }
 
 extern uint32_t _sidata, _sdata, _edata, _sbss, _ebss;
@@ -219,14 +209,14 @@ struct {
 } state;
 
 char stateInit [] = { // pos, clolor, digit
-  /* ON     100 */  0,  8, 24,   1,  8, 23,                                                                     7, 15, 1,   8, 15, 0,   9, 15, 0,
-  /* PTT        */ 10,  8, 25,   11, 8, 29,   12, 8, 29,
-  /* PREAMP     */ 20,  8, 25,   21, 8, 27,   22, 8, 14,   23, 8, 10,   24, 8, 22,   25, 8, 25,
-  /* PWR        */ 30,  8, 25,   31, 8, 32,   32, 8, 27,
-  /* 0123456789 */ 40, 15,  0,   41, 8,  1,   42, 8,  2,   43, 8,  3,   44, 8,  4,   45, 8,  5,   46, 8,  6,   47, 8,  7,   48, 8,  8,   49, 8,  9,
-  /*     144000 */ 52,  0,  0,   53, 0,  0,   54, 2,  1,   55, 2,  4,   56, 2,  4,   57, 8,  0,   58, 8,  0,   59, 8,  0,
-  /* I1     701 */ 60,  2, 18,   61, 2,  1,   67, 2,  8,   68, 2,  0,   69, 2,  1,
-  /* U1     702 */ 70,  2, 30,   71, 2,  1,   77, 2,  8,   78, 2,  0,   79, 2,  2,
+  /* ON     101 */  0,  8, 24,   1,   8, 23,                                                                          7, 15,  1,    8, 15,  0,    9, 15,  1,
+  /* PTT        */ 10,  8, 25,   11,  8, 29,   12,  8, 29,
+  /* PREAMP     */ 20,  8, 25,   21,  8, 27,   22,  8, 14,   23,  8, 10,   24,  8, 22,   25,  8, 25,
+  /* PWR        */ 30,  8, 25,   31,  8, 32,   32,  8, 27,
+  /* 01234567   */ 40, 15,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,
+  /*     144000 */                             52,  0,  0,   53,  0,  0,   54,  2,  1,   55,  2,  4,   56,  2,  4,   57,  8,  0,   58,  8,  0,   59,  8,  0,
+  /* I1     701 */ 60,  2, 18,   61,  2,  1,   67,  2,  8,   68,  2,  0,   69,  2,  1,
+  /* U1     702 */ 70,  2, 30,   71,  2,  1,   77,  2,  8,   78,  2,  0,   79,  2,  2,
 };
 
 char stateON0 [] = {
@@ -261,23 +251,32 @@ char statePWR1 [] = {
   /* PWR        */ 30, 15, 25,   31, 15, 32,   32, 15, 27,
 };
 
-/* 0123456789 */
-char stateBAND0 [] = { 40, 15,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,   48,  8,  8,   49,  8,  9,   /*     144000 */ 52, 0,  0,   53, 0,  0,   54, 2,  1,   55, 2,  4,   56, 2,  4,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
-char stateBAND1 [] = { 40,  8,  0,   41, 15,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,   48,  8,  8,   49,  8,  9,   /*     432000 */ 52, 0,  0,   53, 0,  0,   54, 2,  4,   55, 2,  3,   56, 2,  2,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
-char stateBAND2 [] = { 40,  8,  0,   41,  8,  1,   42, 15,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,   48,  8,  8,   49,  8,  9,   /*    1296000 */ 52, 0,  0,   53, 2,  1,   54, 2,  2,   55, 2,  9,   56, 2,  6,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
-char stateBAND3 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43, 15,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,   48,  8,  8,   49,  8,  9,   /*    2400000 */ 52, 0,  0,   53, 2,  2,   54, 2,  4,   55, 2,  0,   56, 2,  0,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
-char stateBAND4 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44, 15,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,   48,  8,  8,   49,  8,  9,   /*    5760000 */ 52, 0,  0,   53, 2,  5,   54, 2,  8,   55, 2,  6,   56, 2,  0,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
-char stateBAND5 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45, 15,  5,   46,  8,  6,   47,  8,  7,   48,  8,  8,   49,  8,  9,   /*   10368000 */ 52, 2,  1,   53, 2,  0,   54, 2,  3,   55, 2,  6,   56, 2,  8,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
-char stateBAND6 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46, 15,  6,   47,  8,  7,   48,  8,  8,   49,  8,  9,   /*       SATA */ 52, 0,  0,   53, 0,  0,   54, 0,  0,   55, 0,  0,   56, 2, 28,   57, 2, 10,   58, 2, 29,   59, 3, 10,};
-char stateBAND7 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47, 15,  7,   48,  8,  8,   49,  8,  9,   /*       SATB */ 52, 0,  0,   53, 0,  0,   54, 0,  0,   55, 0,  0,   56, 2, 28,   57, 2, 10,   58, 2, 29,   59, 3, 11,};
-char stateBAND8 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,   48, 15,  8,   49,  8,  9,   /*       SATJ */ 52, 0,  0,   53, 0,  0,   54, 0,  0,   55, 0,  0,   56, 2, 28,   57, 2, 10,   58, 2, 29,   59, 3, 19,};
-char stateBAND9 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,   48,  8,  8,   49, 15,  9,   /*       SATQ */ 52, 0,  0,   53, 0,  0,   54, 0,  0,   55, 0,  0,   56, 2, 28,   57, 2, 10,   58, 2, 29,   59, 3, 26,};
+/* 01234567   */
+   char stateBAND0 [] = { 40, 15,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,  /*     144000 */ 52, 0,  0,   53, 0,  0,   54, 2,  1,   55, 2,  4,   56, 2,  4,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
+   char stateBAND1 [] = { 40,  8,  0,   41, 15,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,  /*     432000 */ 52, 0,  0,   53, 0,  0,   54, 2,  4,   55, 2,  3,   56, 2,  2,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
+   char stateBAND2 [] = { 40,  8,  0,   41,  8,  1,   42, 15,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,  /*    1296000 */ 52, 0,  0,   53, 2,  1,   54, 2,  2,   55, 2,  9,   56, 2,  6,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
+   char stateBAND3 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43, 15,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,  /*    2400000 */ 52, 0,  0,   53, 2,  2,   54, 2,  4,   55, 2,  0,   56, 2,  0,   57, 7,  0,   58, 7,  0,   59, 7,  0,};
+
+   char stateBAND4 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44, 15,  4,   45,  8,  5,   46,  8,  6,   47,  8,  7,  /*       SATA */ 52, 0,  0,   53, 0,  0,   54, 0,  0,   55, 0,  0,   56, 2, 28,   57, 2, 10,   58, 2, 29,   59, 3, 10,};
+   char stateBAND5 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45, 15,  5,   46,  8,  6,   47,  8,  7,  /*       SATB */ 52, 0,  0,   53, 0,  0,   54, 0,  0,   55, 0,  0,   56, 2, 28,   57, 2, 10,   58, 2, 29,   59, 3, 11,};
+   char stateBAND6 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46, 15,  6,   47,  8,  7,  /*       SATJ */ 52, 0,  0,   53, 0,  0,   54, 0,  0,   55, 0,  0,   56, 2, 28,   57, 2, 10,   58, 2, 29,   59, 3, 19,};
+   char stateBAND7 [] = { 40,  8,  0,   41,  8,  1,   42,  8,  2,   43,  8,  3,   44,  8,  4,   45,  8,  5,   46,  8,  6,   47, 15,  7,  /*       SATQ */ 52, 0,  0,   53, 0,  0,   54, 0,  0,   55, 0,  0,   56, 2, 28,   57, 2, 10,   58, 2, 29,   59, 3, 26,};
 
 // void delay_ms(uint32_t d) {
 //   for (uint32_t i = 0; i < (d * 1300); i++) {
 //     __asm__( "nop; nop; nop" );
 //   }
 // }
+
+void onEnter0 (void) { state.BAND = 0; paint(stateBAND0, sizeof(stateBAND0)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_0 Y5N1  Y6_1 Y6N0  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter1 (void) { state.BAND = 1; paint(stateBAND1, sizeof(stateBAND1)); MA_0 MB_1  Y1_1 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter2 (void) { state.BAND = 2; paint(stateBAND2, sizeof(stateBAND2)); MA_1 MB_0  Y1_0 Y2_1 Y3_0 Y4_0  Y5_0 Y5N1  Y6_1 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter3 (void) { state.BAND = 3; paint(stateBAND3, sizeof(stateBAND3)); MA_1 MB_1  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_1 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+
+void onEnter4 (void) { state.BAND = 4; paint(stateBAND4, sizeof(stateBAND4)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_1 Y5N0  Y6_1 Y6N0  A__1 AN_0 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter5 (void) { state.BAND = 5; paint(stateBAND5, sizeof(stateBAND5)); MA_0 MB_0  Y1_1 Y2_0 Y3_0 Y4_0  Y5_1 Y5N0  Y6_0 Y6N1  A__0 AN_1 B__1 BN_0 J__0 JN_1 Q__1 QN_0 }
+void onEnter6 (void) { state.BAND = 6; paint(stateBAND6, sizeof(stateBAND6)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_1 Y5N0  Y6_1 Y6N0  A__0 AN_1 B__0 BN_1 J__1 JN_0 Q__1 QN_0 }
+void onEnter7 (void) { state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_1 Y5N0  Y6_1 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1 }
 
 
 void setup_clock (void) {
@@ -360,6 +359,9 @@ void handle_ir(void) {
   uint32_t code;
 
   uint32_t t0, t1, delta;
+
+  paint(stateInit, sizeof(stateInit));
+  onEnter0();
 
   while (1) {
 
@@ -457,42 +459,42 @@ void handle_ir(void) {
           paint(statePWR1, sizeof(statePWR1));
         }
         break;
-      case 0x08F7: state.BAND = 0; paint(stateBAND0, sizeof(stateBAND0)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0   break;
-      case 0x8877: state.BAND = 1; paint(stateBAND1, sizeof(stateBAND1)); MA_0 MB_1  Y1_1 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0   break;
-      case 0x48B7: state.BAND = 2; paint(stateBAND2, sizeof(stateBAND2)); MA_1 MB_0  Y1_0 Y2_1 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0   break;
-      case 0xC837: state.BAND = 3; paint(stateBAND3, sizeof(stateBAND3)); MA_1 MB_1  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0   break;
-      case 0x28D7: state.BAND = 4; paint(stateBAND4, sizeof(stateBAND4)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_1 Y5N0  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0   break;
-      case 0xA857: state.BAND = 5; paint(stateBAND5, sizeof(stateBAND5)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_1 Y6N0  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0   break;
-      case 0x6897: state.BAND = 6; paint(stateBAND6, sizeof(stateBAND6)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__1 AN_0 B__0 BN_1 J__0 JN_1 Q__1 QN_0   break;
-      case 0xE817: state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_1 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__1 BN_0 J__0 JN_1 Q__1 QN_0   break;
-      case 0x18E7: state.BAND = 8; paint(stateBAND8, sizeof(stateBAND8)); MA_0 MB_0  Y1_0 Y2_1 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__1 JN_0 Q__1 QN_0   break;
-      case 0x9867: state.BAND = 9; paint(stateBAND9, sizeof(stateBAND9)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1   break;
+      case 0x08F7: onEnter0(); break;
+      case 0x8877: onEnter1(); break;
+      case 0x48B7: onEnter2(); break;
+      case 0xC837: onEnter3(); break;
+      case 0x28D7: onEnter4(); break;
+      case 0xA857: onEnter5(); break;
+      case 0x6897: onEnter6(); break;
+      case 0xE817: onEnter7(); break;
+      // case 0x18E7: onEnter8(); break;
+      // case 0x9867: onEnter9(); break;
       case 0x00FF: // PgUp
         switch(state.BAND) {
-          case  0: state.BAND = 1; paint(stateBAND1, sizeof(stateBAND1)); MA_0 MB_1  Y1_1 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  1: state.BAND = 2; paint(stateBAND2, sizeof(stateBAND2)); MA_1 MB_0  Y1_0 Y2_1 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  2: state.BAND = 3; paint(stateBAND3, sizeof(stateBAND3)); MA_1 MB_1  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  3: state.BAND = 4; paint(stateBAND4, sizeof(stateBAND4)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_1 Y5N0  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  4: state.BAND = 5; paint(stateBAND5, sizeof(stateBAND5)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_1 Y6N0  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  5: state.BAND = 6; paint(stateBAND6, sizeof(stateBAND6)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__1 AN_0 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  6: state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_1 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__1 BN_0 J__0 JN_1 Q__1 QN_0  break;
-          case  7: state.BAND = 8; paint(stateBAND8, sizeof(stateBAND8)); MA_0 MB_0  Y1_0 Y2_1 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__1 JN_0 Q__1 QN_0  break;
-          case  8: state.BAND = 9; paint(stateBAND9, sizeof(stateBAND9)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1  break;
-          default: state.BAND = 0; paint(stateBAND0, sizeof(stateBAND0)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
+          case  0: onEnter1(); break;
+          case  1: onEnter2(); break;
+          case  2: onEnter3(); break;
+          case  3: onEnter4(); break;
+          case  4: onEnter5(); break;
+          case  5: onEnter6(); break;
+          case  6: onEnter7(); break;
+          default: onEnter0(); break;
+          // case  8: onEnter9(); break;
+          // default: onEnter0(); break;
         }
         break;
       case 0x807F: // PgDown
         switch(state.BAND) {
-          case  0: state.BAND = 9; paint(stateBAND9, sizeof(stateBAND9)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1  break;
-          case  1: state.BAND = 0; paint(stateBAND0, sizeof(stateBAND0)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  2: state.BAND = 1; paint(stateBAND1, sizeof(stateBAND1)); MA_0 MB_1  Y1_1 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  3: state.BAND = 2; paint(stateBAND2, sizeof(stateBAND2)); MA_1 MB_0  Y1_0 Y2_1 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  4: state.BAND = 3; paint(stateBAND3, sizeof(stateBAND3)); MA_1 MB_1  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  5: state.BAND = 4; paint(stateBAND4, sizeof(stateBAND4)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_1 Y5N0  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  6: state.BAND = 5; paint(stateBAND5, sizeof(stateBAND5)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_1 Y6N0  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  7: state.BAND = 6; paint(stateBAND6, sizeof(stateBAND6)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__1 AN_0 B__0 BN_1 J__0 JN_1 Q__1 QN_0  break;
-          case  8: state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_1 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__1 BN_0 J__0 JN_1 Q__1 QN_0  break;
-          default: state.BAND = 8; paint(stateBAND8, sizeof(stateBAND8)); MA_0 MB_0  Y1_0 Y2_1 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__1 JN_0 Q__1 QN_0  break;
+          case  0: onEnter7(); break;
+          case  1: onEnter0(); break;
+          case  2: onEnter1(); break;
+          case  3: onEnter2(); break;
+          case  4: onEnter3(); break;
+          case  5: onEnter4(); break;
+          case  6: onEnter5(); break;
+          default: onEnter6(); break;
+          // case  8: onEnter7(); break;
+          // default: onEnter8(); break;
         }
         break;
 
@@ -549,8 +551,6 @@ int main () {
   // }
 
   // Initial state
-
-  paint(stateInit, sizeof(stateInit));
 
   handle_ir();
 
