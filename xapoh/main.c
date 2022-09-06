@@ -209,7 +209,7 @@ struct {
 } state;
 
 char stateInit [] = { // pos, clolor, digit
-  /* ON     101 */  0,  8, 24,   1,   8, 23,                                                                          7, 15,  1,    8, 15,  0,    9, 15,  1,
+  /* ON     102 */  0,  8, 24,   1,   8, 23,                                                                          7, 15,  1,    8, 15,  0,    9, 15,  2,
   /* PTT        */ 10,  8, 25,   11,  8, 29,   12,  8, 29,
   /* PREAMP     */ 20,  8, 25,   21,  8, 27,   22,  8, 14,   23,  8, 10,   24,  8, 22,   25,  8, 25,
   /* PWR        */ 30,  8, 25,   31,  8, 32,   32,  8, 27,
@@ -276,7 +276,7 @@ void onEnter3 (void) { state.BAND = 3; paint(stateBAND3, sizeof(stateBAND3)); MA
 void onEnter4 (void) { state.BAND = 4; paint(stateBAND4, sizeof(stateBAND4)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_1 Y5N0  Y6_1 Y6N0  A__1 AN_0 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
 void onEnter5 (void) { state.BAND = 5; paint(stateBAND5, sizeof(stateBAND5)); MA_0 MB_0  Y1_1 Y2_0 Y3_0 Y4_0  Y5_1 Y5N0  Y6_0 Y6N1  A__0 AN_1 B__1 BN_0 J__0 JN_1 Q__1 QN_0 }
 void onEnter6 (void) { state.BAND = 6; paint(stateBAND6, sizeof(stateBAND6)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_1 Y5N0  Y6_1 Y6N0  A__0 AN_1 B__0 BN_1 J__1 JN_0 Q__1 QN_0 }
-void onEnter7 (void) { state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_1 Y5N0  Y6_1 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1 }
+void onEnter7 (void) { state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_1 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1 }
 
 
 void setup_clock (void) {
