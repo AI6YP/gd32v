@@ -10,7 +10,7 @@
 // Y4  -> PA2
 // Y5  -> PA1
 // Y5N -> PA0
-// Y6  -> PB13
+// Y1N -> PB13
 // Y6N -> PB14
 // Y7  -> PC13
 // Y8  -> PC14
@@ -46,8 +46,8 @@
 #define Y5N1  GPIOA->ODR |=  (1 << 0);
 #define Y5N0  GPIOA->ODR &= ~(1 << 0);
 
-#define Y6_1  GPIOB->ODR |=  (1 << 13);
-#define Y6_0  GPIOB->ODR &= ~(1 << 13);
+#define Y1N1  GPIOB->ODR |=  (1 << 13);
+#define Y1N0  GPIOB->ODR &= ~(1 << 13);
 
 #define Y6N1  GPIOB->ODR |=  (1 << 14);
 #define Y6N0  GPIOB->ODR &= ~(1 << 14);
@@ -161,14 +161,14 @@ void port_init () {
   GPIOB->CRH = (GPIOB->CRH & ~(
     (GPIO_CRH_MODE9  | GPIO_CRH_CNF9 ) | // PTT -> PB9
     (GPIO_CRH_MODE12 | GPIO_CRH_CNF12) | // A   -> PB12
-    (GPIO_CRH_MODE13 | GPIO_CRH_CNF13) | // Y6  -> PB13
+    (GPIO_CRH_MODE13 | GPIO_CRH_CNF13) | // Y1N -> PB13
     (GPIO_CRH_MODE14 | GPIO_CRH_CNF14) | // Y6N -> PB14
     (GPIO_CRH_MODE15 | GPIO_CRH_CNF15) | // QN  -> PB15
     0
   )) | (
     (0x2 << GPIO_CRH_MODE9_Pos)  | // PTT -> PB9
     (0x2 << GPIO_CRH_MODE12_Pos) | // A   -> PB12
-    (0x2 << GPIO_CRH_MODE13_Pos) | // Y6  -> PB13
+    (0x2 << GPIO_CRH_MODE13_Pos) | // Y1N -> PB13
     (0x2 << GPIO_CRH_MODE14_Pos) | // Y6N -> PB14
     (0x2 << GPIO_CRH_MODE15_Pos) | // QN  -> PB15
     0
@@ -268,15 +268,15 @@ char statePWR1 [] = {
 //   }
 // }
 
-void onEnter0 (void) { state.BAND = 0; paint(stateBAND0, sizeof(stateBAND0)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_0 Y5N1  Y6_1 Y6N0  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
-void onEnter1 (void) { state.BAND = 1; paint(stateBAND1, sizeof(stateBAND1)); MA_0 MB_1  Y1_1 Y2_0 Y3_0 Y4_0  Y5_0 Y5N1  Y6_0 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
-void onEnter2 (void) { state.BAND = 2; paint(stateBAND2, sizeof(stateBAND2)); MA_1 MB_0  Y1_0 Y2_1 Y3_0 Y4_0  Y5_0 Y5N1  Y6_1 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
-void onEnter3 (void) { state.BAND = 3; paint(stateBAND3, sizeof(stateBAND3)); MA_1 MB_1  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_1 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter0 (void) { state.BAND = 0; paint(stateBAND0, sizeof(stateBAND0)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_1 Y4_0 Y5_0 Y5N1 Y6N0 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter1 (void) { state.BAND = 1; paint(stateBAND1, sizeof(stateBAND1)); MA_0 MB_1  Y1_1 Y1N0 Y2_0 Y3_0 Y4_0 Y5_0 Y5N1 Y6N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter2 (void) { state.BAND = 2; paint(stateBAND2, sizeof(stateBAND2)); MA_1 MB_0  Y1_0 Y1N1 Y2_1 Y3_0 Y4_0 Y5_0 Y5N1 Y6N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter3 (void) { state.BAND = 3; paint(stateBAND3, sizeof(stateBAND3)); MA_1 MB_1  Y1_0 Y1N1 Y2_0 Y3_0 Y4_1 Y5_0 Y5N1 Y6N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
 
-void onEnter4 (void) { state.BAND = 4; paint(stateBAND4, sizeof(stateBAND4)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_1 Y5N0  Y6_1 Y6N0  A__1 AN_0 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
-void onEnter5 (void) { state.BAND = 5; paint(stateBAND5, sizeof(stateBAND5)); MA_0 MB_0  Y1_1 Y2_0 Y3_0 Y4_0  Y5_1 Y5N0  Y6_0 Y6N1  A__0 AN_1 B__1 BN_0 J__0 JN_1 Q__1 QN_0 }
-void onEnter6 (void) { state.BAND = 6; paint(stateBAND6, sizeof(stateBAND6)); MA_0 MB_0  Y1_0 Y2_0 Y3_1 Y4_0  Y5_1 Y5N0  Y6_1 Y6N0  A__0 AN_1 B__0 BN_1 J__1 JN_0 Q__1 QN_0 }
-void onEnter7 (void) { state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_0 Y2_0 Y3_0 Y4_1  Y5_0 Y5N1  Y6_1 Y6N1  A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1 }
+void onEnter4 (void) { state.BAND = 4; paint(stateBAND4, sizeof(stateBAND4)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_1 Y4_0 Y5_1 Y5N0 Y6N0 A__1 AN_0 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter5 (void) { state.BAND = 5; paint(stateBAND5, sizeof(stateBAND5)); MA_0 MB_0  Y1_1 Y1N0 Y2_0 Y3_0 Y4_0 Y5_1 Y5N0 Y6N1 A__0 AN_1 B__1 BN_0 J__0 JN_1 Q__1 QN_0 }
+void onEnter6 (void) { state.BAND = 6; paint(stateBAND6, sizeof(stateBAND6)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_1 Y4_0 Y5_1 Y5N0 Y6N0 A__0 AN_1 B__0 BN_1 J__1 JN_0 Q__1 QN_0 }
+void onEnter7 (void) { state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_0 Y4_1 Y5_0 Y5N1 Y6N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1 }
 
 
 void setup_clock (void) {
