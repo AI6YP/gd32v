@@ -268,15 +268,15 @@ char statePWR1 [] = {
 //   }
 // }
 
-void onEnter0 (void) { state.BAND = 0; paint(stateBAND0, sizeof(stateBAND0)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_1 Y4_0 Y5_0 Y5N1 Y3N0 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
-void onEnter1 (void) { state.BAND = 1; paint(stateBAND1, sizeof(stateBAND1)); MA_0 MB_1  Y1_1 Y1N0 Y2_0 Y3_0 Y4_0 Y5_0 Y5N1 Y3N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
-void onEnter2 (void) { state.BAND = 2; paint(stateBAND2, sizeof(stateBAND2)); MA_1 MB_0  Y1_0 Y1N1 Y2_1 Y3_0 Y4_0 Y5_0 Y5N1 Y3N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
-void onEnter3 (void) { state.BAND = 3; paint(stateBAND3, sizeof(stateBAND3)); MA_1 MB_1  Y1_0 Y1N1 Y2_0 Y3_0 Y4_1 Y5_0 Y5N1 Y3N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter0 (void) { state.BAND = 0; paint(stateBAND0, sizeof(stateBAND0)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_1 Y3N0 Y4_0 Y5_0 Y5N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter1 (void) { state.BAND = 1; paint(stateBAND1, sizeof(stateBAND1)); MA_0 MB_1  Y1_1 Y1N0 Y2_0 Y3_0 Y3N1 Y4_0 Y5_0 Y5N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter2 (void) { state.BAND = 2; paint(stateBAND2, sizeof(stateBAND2)); MA_1 MB_0  Y1_0 Y1N1 Y2_1 Y3_0 Y3N1 Y4_0 Y5_0 Y5N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter3 (void) { state.BAND = 3; paint(stateBAND3, sizeof(stateBAND3)); MA_1 MB_1  Y1_0 Y1N1 Y2_0 Y3_0 Y3N1 Y4_1 Y5_0 Y5N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
 
-void onEnter4 (void) { state.BAND = 4; paint(stateBAND4, sizeof(stateBAND4)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_1 Y4_0 Y5_1 Y5N0 Y3N0 A__1 AN_0 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
-void onEnter5 (void) { state.BAND = 5; paint(stateBAND5, sizeof(stateBAND5)); MA_0 MB_0  Y1_1 Y1N0 Y2_0 Y3_0 Y4_0 Y5_1 Y5N0 Y3N1 A__0 AN_1 B__1 BN_0 J__0 JN_1 Q__1 QN_0 }
-void onEnter6 (void) { state.BAND = 6; paint(stateBAND6, sizeof(stateBAND6)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_1 Y4_0 Y5_1 Y5N0 Y3N0 A__0 AN_1 B__0 BN_1 J__1 JN_0 Q__1 QN_0 }
-void onEnter7 (void) { state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_0 Y4_1 Y5_0 Y5N1 Y3N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1 }
+void onEnter4 (void) { state.BAND = 4; paint(stateBAND4, sizeof(stateBAND4)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_1 Y3N0 Y4_0 Y5_1 Y5N0 A__1 AN_0 B__0 BN_1 J__0 JN_1 Q__1 QN_0 }
+void onEnter5 (void) { state.BAND = 5; paint(stateBAND5, sizeof(stateBAND5)); MA_0 MB_0  Y1_1 Y1N0 Y2_0 Y3_0 Y3N1 Y4_0 Y5_1 Y5N0 A__0 AN_1 B__1 BN_0 J__0 JN_1 Q__1 QN_0 }
+void onEnter6 (void) { state.BAND = 6; paint(stateBAND6, sizeof(stateBAND6)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_1 Y3N0 Y4_0 Y5_1 Y5N0 A__0 AN_1 B__0 BN_1 J__1 JN_0 Q__1 QN_0 }
+void onEnter7 (void) { state.BAND = 7; paint(stateBAND7, sizeof(stateBAND7)); MA_0 MB_0  Y1_0 Y1N1 Y2_0 Y3_0 Y3N1 Y4_1 Y5_0 Y5N1 A__0 AN_1 B__0 BN_1 J__0 JN_1 Q__0 QN_1 }
 
 
 void setup_clock (void) {
